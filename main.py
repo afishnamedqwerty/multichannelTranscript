@@ -27,25 +27,29 @@ def run_script(script_name):
     except subprocess.CalledProcessError as e:
         print(f"Error in {script_name}: {e.stderr}")
 
+
+def convert_files_to_flac(source_folder, flac_cache_folder):
+    for file_name in os.listdir(source_folder):
+        file_path = os.path.join(source_folder, file_name)
+        if file_name.endswith('.aac'):
+            convert_aac_to_flac(file_path, flac_cache_folder)
+        elif file_name.endswith('.mp3'):
+            convert_mp3_to_flac(file_path, flac_cache_folder)
+        elif file_name.endswith('.wav'):
+            convert_wav_to_flac(file_path, flac_cache_folder)
+
 def main():
     data_folder = 'data'
     flac_cache = 'flac_cache'
 
     extensions = check_file_extensions(data_folder)
 
-    if extensions == {'.flac'}:
-        clear_and_copy_to_flac_cache(data_folder, flac_cache)
-    else:
-        for file_name in os.listdir(data_folder):
-            if file_name.endswith('.aac'):
-                convert_aac_to_flac(data_folder, flac_cache)
-            elif file_name.endswith('.mp3'):
-                convert_mp3_to_flac(data_folder, flac_cache)
-            elif file_name.endswith('.wav'):
-                convert_wav_to_flac(data_folder, flac_cache)
+    all_flac = all(ext == '.flac' for ext in extensions)
 
-
-
+    if not all_flac:
+        convert_files_to_flac(data_folder, flac_cache)
+    
+    clear_and_copy_to_flac_cache(data_folder, flac_cache)
 
     """Main function to run scripts sequentially."""
     run_script('whisper_binaries.iterate.py')

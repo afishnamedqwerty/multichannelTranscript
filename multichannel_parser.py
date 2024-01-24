@@ -6,7 +6,6 @@ import logging
 # Configure logging
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
-
 def read_srt_files(folder_path):
     transcripts = []
     for file in os.listdir(folder_path):
@@ -75,30 +74,6 @@ def write_to_file(transcripts, transcripts_folder):
         logging.info(f"Output file written successfully: {output_file}")
     except Exception as e:
         logging.error(f"Error writing to output file: {e}")
-
-
-
-
-def read_and_parse_files(directory):
-    all_records = []
-    for filename in os.listdir(directory):
-        if filename.endswith('.txt'):
-            with open(os.path.join(directory, filename), 'r') as file:
-                for line in file:
-                    match = re.search(r'(\d{2}:\d{2}:\d{2})\s+(.*)', line)
-                    if match:
-                        timestamp = match.group(1)
-                        message = match.group(2)
-                        all_records.append((timestamp, message, filename))
-    return all_records
-
-def sort_records(all_records):
-    return sorted(all_records, key=lambda x: datetime.strptime(x[0], '%H:%M:%S'))
-
-def write_to_transcript(sorted_records, output_file):
-    with open(output_file, 'w') as file:
-        for record in sorted_records:
-            file.write(f"{record[0]} {record[1]} (from {record[2]})\n")
 
 def main():
     folder_path = 'srt_cache'
