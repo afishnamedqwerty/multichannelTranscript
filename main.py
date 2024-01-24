@@ -28,7 +28,7 @@ def run_script(script_name):
         print(f"Error in {script_name}: {e.stderr}")
 
 def main():
-    data_folder = '/data'
+    data_folder = 'data'
     flac_cache = 'flac_cache'
 
     extensions = check_file_extensions(data_folder)

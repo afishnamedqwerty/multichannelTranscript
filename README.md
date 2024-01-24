@@ -22,17 +22,13 @@ Before using this project, ensure you have the following installed:
 1. Place your audio files into the `data` folder (`.aac`, `.flac`, `.mp3`, `.wav` supported).
 2. Run the script using Python: `python main.py`.
 3. Audio files are converted and copied into `flac_cache` folder and whisper transcription is sequentially run on each file. 
-4. Whisper flag customization is available in the `whisper_binaries_iterate.py` file 
-5. Processed SRT files will be available in the `srt_cache` folder.
-4. 
+4. Whisper flag customization is available in the `whisper_binaries_iterate.py` file by editing the following command with supported Whisper configurations: `command = f"whisper {source_file} --model small --output {temp_output_file}"` Secondary output files for each audio file are cleaned upon completion and processed SRT files are stored into the `srt_cache` folder.
+5. Upon successful completion of whisper transcription, the `multichannel_parser.py` script is called within `main.py` to merge and format all audio transcripts into one ordered text file.
+
 
 ## Folder Structure
-- `audio_cache/`: Place your `.flac` audio files here.
+- `data/`: Place your supported audio files here.
+- `flac_cache/`: Temp folder to load the converted `.flac` files for processing. 
 - `srt_cache/`: Processed `.srt` files will be stored here.
+- `transcripts/`: Output location for rendered transcripts.
 
-## Configuration
-The script `process_flac_files.py` can be configured to modify the source and destination folders. Modify the following lines as needed:
-
-```python
-source_folder = 'audio_cache'  # Folder containing .flac files
-dest_folder = 'srt_cache'      # Folder where .srt files will be stored
